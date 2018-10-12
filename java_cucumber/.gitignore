@@ -2,6 +2,9 @@
 .idea/
 *.iml
 *.iws
+.project
+.classpath
+.settings
 
 # Mac
 .DS_Store
@@ -12,4 +15,5 @@ target/
 
 .gradle
 build/
+bin
 
