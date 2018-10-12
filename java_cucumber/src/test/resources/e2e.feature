@@ -1,4 +1,5 @@
 Feature: 自動販売機
 
   Scenario:
-#    Given I visit top page
+    When I visit top page
+    Then I should see "hello"
