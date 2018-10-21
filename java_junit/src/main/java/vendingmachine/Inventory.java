@@ -21,14 +21,7 @@ public class Inventory {
     }
 
     boolean canBuy(String name, Integer currentCharge) {
-        for (Drink drink : drinks) {
-            if (name.equals(drink.name)) {
-                if (currentCharge < drink.price) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return currentCharge < findBy(name).price;
     }
 
     int buyBy(String name) {
