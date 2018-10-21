@@ -1,7 +1,9 @@
 package vendingmachine;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Inventory {
     List<Drink> drinks;
@@ -50,5 +52,27 @@ public class Inventory {
                 .filter(drink -> drink.name.equals(name))
                 .findFirst()
                 .get();
+    }
+
+    private int sizeBy(String name) {
+        return (int) drinks.stream()
+                .filter(drink -> drink.name.equals(name))
+                .count();
+    }
+
+    private Map<String, Drink> menu() {
+        Map<String, Drink> menu = new HashMap<>();
+        drinks.forEach(drink -> {
+            menu.put(drink.name, drink);
+        });
+        return menu;
+    }
+
+    String info() {
+        List<String> result = new ArrayList<>();
+        menu().forEach((name, drink) -> {
+            result.add(drink.info() + String.valueOf(sizeBy(name)));
+        });
+        return String.join("\n", result);
     }
 }

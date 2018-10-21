@@ -8,4 +8,8 @@ class Drink {
         this.name = name;
         this.price = price;
     }
+
+    public String info() {
+        return name + " " + price + "yen: ";
+    }
 }
