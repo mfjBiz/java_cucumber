@@ -1,10 +1,8 @@
 package vendingmachine;
 
-import java.util.List;
-
 class VendingMachine {
     Inventory inventory;
-    private int charge;
+    private ChargeBox chargeBox = new ChargeBox();
 
     VendingMachine() {
         inventory = new Inventory();
@@ -15,19 +13,17 @@ class VendingMachine {
 
     VendingMachine charge(int money) {
         if (money == 10 || money == 50 || money == 100 || money == 500 || money == 1000) {
-            this.charge += money;
+            chargeBox.add(money);
         }
         return this;
     }
 
     Integer currentCharge() {
-        return charge;
+        return chargeBox.value;
     }
 
     Integer resetCharge() {
-        Integer charge = this.charge;
-        this.charge = 0;
-        return charge;
+        return chargeBox.reset();
     }
 
     String inventory() {
@@ -43,13 +39,12 @@ class VendingMachine {
         if (!inventory.existBy(name)) {
             return false;
         }
-        Integer currentCharge = currentCharge();
-        return !inventory.canBuy(name, currentCharge);
+        return !inventory.canBuy(name, currentCharge());
     }
 
     void buy(String name) {
         int price = inventory.buyBy(name);
-        charge = currentCharge() - price;
+        chargeBox.minus(price);
     }
 
 }
