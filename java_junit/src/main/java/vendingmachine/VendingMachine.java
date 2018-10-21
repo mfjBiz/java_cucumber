@@ -63,16 +63,8 @@ class VendingMachine {
     }
 
     void buy(String name) {
-        int price = 0;
-        Iterator<Drink> drinkIterator = inventory.drinks.iterator();
-        while (drinkIterator.hasNext()) {
-            Drink drink = drinkIterator.next();
-            if (drink.name.equals(name)) {
-                price = drink.price;
-                drinkIterator.remove();
-                break;
-            }
-        }
+        int price = inventory.buyBy(name);
         charge = currentCharge() - price;
     }
+
 }

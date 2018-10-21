@@ -15,12 +15,7 @@ public class Inventory {
     }
 
     boolean existBy(String name) {
-        for (Drink drink : drinks) {
-            if (name.equals(drink.name)) {
-                return true;
-            }
-        }
-        return false;
+        return drinks.stream().anyMatch(drink -> drink.name.equals(name));
     }
 
     boolean canBuy(String name, Integer currentCharge) {
@@ -32,5 +27,28 @@ public class Inventory {
             }
         }
         return false;
+    }
+
+    int buyBy(String name) {
+        if (!existBy(name)) {
+            return 0;
+        }
+        Drink drink = findBy(name);
+        removeBy(name);
+        return drink.price;
+    }
+
+    private void removeBy(String name) {
+        drinks.stream()
+                .filter(drink -> drink.name.equals(name))
+                .findFirst()
+                .map(drink -> drinks.remove(drink));
+    }
+
+    private Drink findBy(String name) {
+        return drinks.stream()
+                .filter(drink -> drink.name.equals(name))
+                .findFirst()
+                .get();
     }
 }
