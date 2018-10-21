@@ -41,8 +41,8 @@ public class VendingMachineTest {
     @Test
     void has5CokeInit() {
         VendingMachine vm = new VendingMachine();
-        assertThat(vm.drinks.size(), is(5));
-        vm.drinks.forEach((drink) -> {
+        assertThat(vm.inventory.drinks.size(), is(5));
+        vm.inventory.drinks.forEach((drink) -> {
             assertThat(drink.name, is("coke"));
             assertThat(drink.price, is(120));
         });
@@ -52,9 +52,9 @@ public class VendingMachineTest {
     @Test
     void addDrink() {
         VendingMachine vm = new VendingMachine().addDrink("water", "100");
-        assertThat(vm.drinks.size(), is(6));
-        assertThat(vm.drinks.get(5).name, is("water"));
-        assertThat(vm.drinks.get(5).price, is(100));
+        assertThat(vm.inventory.drinks.size(), is(6));
+        assertThat(vm.inventory.drinks.get(5).name, is("water"));
+        assertThat(vm.inventory.drinks.get(5).price, is(100));
     }
 
     @Test

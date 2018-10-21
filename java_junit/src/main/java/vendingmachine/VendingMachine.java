@@ -3,12 +3,13 @@ package vendingmachine;
 import java.util.*;
 
 class VendingMachine {
-    List<Drink> drinks = new ArrayList<>();
+    Inventory inventory;
     private int charge;
 
     VendingMachine() {
+        inventory = new Inventory();
         for (int i = 0; i < 5; i++) {
-            drinks.add(new Drink("coke", 120));
+            inventory.drinks.add(new Drink("coke", 120));
         }
     }
 
@@ -31,7 +32,7 @@ class VendingMachine {
 
     String inventory() {
         Map<String, List<String>> map = new HashMap<>();
-        for (Drink drink : drinks) {
+        for (Drink drink : inventory.drinks) {
             if (map.containsKey(drink.name)) {
                 String size = map.get(drink.name).get(1);
                 int sizeInt = Integer.valueOf(size);
@@ -49,21 +50,15 @@ class VendingMachine {
     }
 
     VendingMachine addDrink(String name, String price) {
-        drinks.add(new Drink(name, Integer.parseInt(price)));
+        inventory.drinks.add(new Drink(name, Integer.parseInt(price)));
         return this;
     }
 
     boolean canBy(String name) {
-        boolean existInventory = false;
-        for (Drink drink : drinks) {
-            if (name.equals(drink.name)) {
-                existInventory = true;
-            }
-        }
-        if (!existInventory) {
+        if (!inventory.existBy(name)) {
             return false;
         }
-        for (Drink drink : drinks) {
+        for (Drink drink : inventory.drinks) {
             if (name.equals(drink.name)) {
                 if (currentCharge() < drink.price) {
                     return false;
@@ -75,7 +70,7 @@ class VendingMachine {
 
     void buy(String name) {
         int price = 0;
-        Iterator<Drink> drinkIterator = drinks.iterator();
+        Iterator<Drink> drinkIterator = inventory.drinks.iterator();
         while (drinkIterator.hasNext()) {
             Drink drink = drinkIterator.next();
             if (drink.name.equals(name)) {
