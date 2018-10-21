@@ -4,20 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Inventory {
-    public List<Drink> drinks;
+    List<Drink> drinks;
 
-    public Inventory() {
+    Inventory() {
         this.drinks = new ArrayList<>();
     }
 
-    public Inventory(List<Drink> drinks) {
-        this.drinks = drinks;
+    void add(Drink drink) {
+        drinks.add(drink);
     }
 
     boolean existBy(String name) {
         for (Drink drink : drinks) {
             if (name.equals(drink.name)) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    boolean canBuy(String name, Integer currentCharge) {
+        for (Drink drink : drinks) {
+            if (name.equals(drink.name)) {
+                if (currentCharge < drink.price) {
+                    return true;
+                }
             }
         }
         return false;

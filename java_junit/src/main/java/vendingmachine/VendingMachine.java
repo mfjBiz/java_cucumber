@@ -9,7 +9,7 @@ class VendingMachine {
     VendingMachine() {
         inventory = new Inventory();
         for (int i = 0; i < 5; i++) {
-            inventory.drinks.add(new Drink("coke", 120));
+            inventory.add(new Drink("coke", 120));
         }
     }
 
@@ -50,7 +50,7 @@ class VendingMachine {
     }
 
     VendingMachine addDrink(String name, String price) {
-        inventory.drinks.add(new Drink(name, Integer.parseInt(price)));
+        inventory.add(new Drink(name, Integer.parseInt(price)));
         return this;
     }
 
@@ -58,14 +58,8 @@ class VendingMachine {
         if (!inventory.existBy(name)) {
             return false;
         }
-        for (Drink drink : inventory.drinks) {
-            if (name.equals(drink.name)) {
-                if (currentCharge() < drink.price) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        Integer currentCharge = currentCharge();
+        return !inventory.canBuy(name, currentCharge);
     }
 
     void buy(String name) {
