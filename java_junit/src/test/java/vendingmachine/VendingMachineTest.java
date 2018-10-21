@@ -1,9 +1,10 @@
+package vendingmachine;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -111,14 +112,13 @@ public class VendingMachineTest {
 
         @Test
         void updateCharge() {
-            List<String[]> patterns = Arrays.asList(
+            Arrays.asList(
                     new String[]{"coke", "380"},
                     new String[]{"tea", "230"}
-            );
-            for (String[] pattern : patterns) {
+            ).forEach(pattern -> {
                 vm.buy(pattern[0]);
                 assertThat(vm.currentCharge(), is(Integer.valueOf(pattern[1])));
-            }
+            });
         }
 
         @Test

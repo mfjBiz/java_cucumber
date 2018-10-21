@@ -1,33 +1,35 @@
+package vendingmachine;
+
 import java.util.*;
 
-public class VendingMachine {
-    public List<Drink> drinks = new ArrayList<>();
+class VendingMachine {
+    List<Drink> drinks = new ArrayList<>();
     private int charge;
 
-    public VendingMachine() {
+    VendingMachine() {
         for (int i = 0; i < 5; i++) {
             drinks.add(new Drink("coke", 120));
         }
     }
 
-    public VendingMachine charge(int money) {
+    VendingMachine charge(int money) {
         if (money == 10 || money == 50 || money == 100 || money == 500 || money == 1000) {
             this.charge += money;
         }
         return this;
     }
 
-    public Integer currentCharge() {
+    Integer currentCharge() {
         return charge;
     }
 
-    public Integer resetCharge() {
+    Integer resetCharge() {
         Integer charge = this.charge;
         this.charge = 0;
         return charge;
     }
 
-    public String inventory() {
+    String inventory() {
         Map<String, List<String>> map = new HashMap<>();
         for (Drink drink : drinks) {
             if (map.containsKey(drink.name)) {
@@ -46,24 +48,24 @@ public class VendingMachine {
         return String.join("\n", result);
     }
 
-    public VendingMachine addDrink(String name, String price) {
+    VendingMachine addDrink(String name, String price) {
         drinks.add(new Drink(name, Integer.parseInt(price)));
         return this;
     }
 
-    public boolean canBy(String name) {
+    boolean canBy(String name) {
         boolean existInventory = false;
         for (Drink drink : drinks) {
-            if (name == drink.name) {
+            if (name.equals(drink.name)) {
                 existInventory = true;
             }
         }
-        if (existInventory == false) {
+        if (!existInventory) {
             return false;
         }
         for (Drink drink : drinks) {
-            if (name == drink.name) {
-                if (currentCharge() < Integer.valueOf(drink.price)) {
+            if (name.equals(drink.name)) {
+                if (currentCharge() < drink.price) {
                     return false;
                 }
             }
@@ -71,18 +73,17 @@ public class VendingMachine {
         return true;
     }
 
-    public void buy(String name) {
+    void buy(String name) {
         int price = 0;
         Iterator<Drink> drinkIterator = drinks.iterator();
         while (drinkIterator.hasNext()) {
             Drink drink = drinkIterator.next();
-            if (drink.name == name) {
+            if (drink.name.equals(name)) {
                 price = drink.price;
                 drinkIterator.remove();
                 break;
             }
         }
-
         charge = currentCharge() - price;
     }
 }
