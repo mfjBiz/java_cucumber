@@ -1,4 +1,3 @@
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,16 +12,16 @@ public class VendingMachineTest {
 
     @Test
     void chargeValidMoney() {
-        for (Integer charge: Arrays.asList(10,50,500,1000)) {
+        Arrays.asList(10, 50, 500, 1000).forEach(charge -> {
             assertThat(new VendingMachine().charge(charge).currentCharge(), is(charge));
-        }
+        });
     }
 
     @Test
     void chargeInvalidMoney() {
-        for (Integer charge : Arrays.asList(1,5,5000,10000)) {
+        Arrays.asList(1, 5, 5000, 10000).forEach(charge -> {
             assertThat(new VendingMachine().charge(charge).currentCharge(), is(0));
-        }
+        });
     }
 
     @Test
@@ -40,11 +39,11 @@ public class VendingMachineTest {
 
     @Test
     void has5CokeInit() {
-        VendingMachine vm= new VendingMachine();
+        VendingMachine vm = new VendingMachine();
         assertThat(vm.drinks.size(), is(5));
-        vm.drinks.forEach((drink)-> {
-            assertThat(drink.get(0), is("coke"));
-            assertThat(drink.get(1), is("120"));
+        vm.drinks.forEach((drink) -> {
+            assertThat(drink.name, is("coke"));
+            assertThat(drink.price, is(120));
         });
 
     }
@@ -53,8 +52,8 @@ public class VendingMachineTest {
     void addDrink() {
         VendingMachine vm = new VendingMachine().addDrink("water", "100");
         assertThat(vm.drinks.size(), is(6));
-        assertThat(vm.drinks.get(5).get(0), is("water"));
-        assertThat(vm.drinks.get(5).get(1), is("100"));
+        assertThat(vm.drinks.get(5).name, is("water"));
+        assertThat(vm.drinks.get(5).price, is(100));
     }
 
     @Test
@@ -71,10 +70,12 @@ public class VendingMachineTest {
     @Nested
     public class canBuy {
         private VendingMachine vendingMachine;
+
         @BeforeEach
         void before() {
             vendingMachine = new VendingMachine();
         }
+
         @Test
         void lessChargeEnoughInventory() {
             vendingMachine.addDrink("tea", "150");
@@ -82,11 +83,13 @@ public class VendingMachineTest {
             assertThat(vendingMachine.canBy("tea"), is(false));
             assertThat(vendingMachine.canBy("coke"), is(false));
         }
+
         @Test
         void enoughChargeAndInventory() {
             vendingMachine.charge(100).charge(10).charge(10);
             assertThat(vendingMachine.canBy("coke"), is(true));
         }
+
         @Test
         void lessInventoryEnoughtCharge() {
             vendingMachine.charge(100).charge(50);
@@ -105,22 +108,25 @@ public class VendingMachineTest {
             vm.addDrink("tea", "150");
             vm.charge(500);
         }
+
         @Test
-        void updateCharge(){
+        void updateCharge() {
             List<String[]> patterns = Arrays.asList(
                     new String[]{"coke", "380"},
-                    new String[]{"tea",  "230"}
+                    new String[]{"tea", "230"}
             );
             for (String[] pattern : patterns) {
                 vm.buy(pattern[0]);
                 assertThat(vm.currentCharge(), is(Integer.valueOf(pattern[1])));
             }
         }
+
         @Test
         void updateInventory() {
             vm.buy("tea");
             assertThat(vm.inventory(), is("coke 120yen: 5"));
         }
+
         @Test
         void cantBuyWhenNoInventory() {
             vm.buy("tea");

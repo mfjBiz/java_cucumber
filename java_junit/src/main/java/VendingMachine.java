@@ -1,15 +1,13 @@
 import java.util.*;
 
 public class VendingMachine {
-    public List<List<String>> drinks = new ArrayList<>();
+    public List<Drink> drinks = new ArrayList<>();
     private int charge;
 
     public VendingMachine() {
-        drinks.add(Arrays.asList("coke", "120"));
-        drinks.add(Arrays.asList("coke", "120"));
-        drinks.add(Arrays.asList("coke", "120"));
-        drinks.add(Arrays.asList("coke", "120"));
-        drinks.add(Arrays.asList("coke", "120"));
+        for (int i = 0; i < 5; i++) {
+            drinks.add(new Drink("coke", 120));
+        }
     }
 
     public VendingMachine charge(int money) {
@@ -31,41 +29,41 @@ public class VendingMachine {
 
     public String inventory() {
         Map<String, List<String>> map = new HashMap<>();
-        for (List<String> drink: drinks) {
-            if(map.containsKey(drink.get(0))) {
-                String size = map.get(drink.get(0)).get(1);
+        for (Drink drink : drinks) {
+            if (map.containsKey(drink.name)) {
+                String size = map.get(drink.name).get(1);
                 int sizeInt = Integer.valueOf(size);
                 sizeInt++;
-                map.put(drink.get(0), Arrays.asList(drink.get(1), String.valueOf(sizeInt)));
+                map.put(drink.name, Arrays.asList(String.valueOf(drink.price), String.valueOf(sizeInt)));
             } else {
-                map.put(drink.get(0), Arrays.asList(drink.get(1), "1"));
+                map.put(drink.name, Arrays.asList(String.valueOf(drink.price), "1"));
             }
         }
         List<String> result = new ArrayList<>();
         map.forEach((k, v) -> {
-            result.add((k+" "+v.get(0)+"yen: "+v.get(1)));
+            result.add((k + " " + v.get(0) + "yen: " + v.get(1)));
         });
         return String.join("\n", result);
     }
 
     public VendingMachine addDrink(String name, String price) {
-        drinks.add(Arrays.asList(name, price));
+        drinks.add(new Drink(name, Integer.parseInt(price)));
         return this;
     }
 
     public boolean canBy(String name) {
         boolean existInventory = false;
-        for (List<String> drink : drinks) {
-            if (name == drink.get(0)) {
+        for (Drink drink : drinks) {
+            if (name == drink.name) {
                 existInventory = true;
             }
         }
         if (existInventory == false) {
             return false;
         }
-        for (List<String> drink : drinks) {
-            if(name == drink.get(0)) {
-                if (currentCharge() < Integer.valueOf(drink.get(1))) {
+        for (Drink drink : drinks) {
+            if (name == drink.name) {
+                if (currentCharge() < Integer.valueOf(drink.price)) {
                     return false;
                 }
             }
@@ -75,11 +73,11 @@ public class VendingMachine {
 
     public void buy(String name) {
         int price = 0;
-        Iterator<List<String>> drinkIterator = drinks.iterator();
-        while(drinkIterator.hasNext()){
-            List<String> drink = drinkIterator.next();
-            if (drink.get(0) == name){
-                price = Integer.parseInt(drink.get(1));
+        Iterator<Drink> drinkIterator = drinks.iterator();
+        while (drinkIterator.hasNext()) {
+            Drink drink = drinkIterator.next();
+            if (drink.name == name) {
+                price = drink.price;
                 drinkIterator.remove();
                 break;
             }
