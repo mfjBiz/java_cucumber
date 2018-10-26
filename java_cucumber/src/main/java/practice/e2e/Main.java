@@ -19,6 +19,6 @@ public class Main {
         Server server = new Server(8080);
         server.setHandler(contextHandler);
         server.start();
-        server.join(っk);
+        server.join();
     }
 }
