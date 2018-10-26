@@ -1,4 +1,4 @@
-package gradle.cucumber;
+package gradle.cucumber.blog;
 
 import org.openqa.selenium.chrome.ChromeDriver;
 
