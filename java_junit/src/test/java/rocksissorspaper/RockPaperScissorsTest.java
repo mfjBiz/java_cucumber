@@ -47,9 +47,8 @@ public class RockPaperScissorsTest {
                 this.hand = hand;
                 this.result = result;
             }
-
             public String toString(){
-                return "hand: " + hand + " cpuHand: " + cpuHand.value();
+                return "hand: " + hand.value() + " cpuHand: " + cpuHand.value();
             }
         }
 
