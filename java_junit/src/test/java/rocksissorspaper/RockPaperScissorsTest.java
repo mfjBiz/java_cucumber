@@ -20,6 +20,7 @@ public class RockPaperScissorsTest {
     void game() {
         String actual = new Game("Rock", new CpuHandFactory()).exec();
         assertThat(actual, isOneOf("Win", "Lose", "Draw"));
+        assertThat(actual, isOneOf("Win", "Lose", "Draw"));
     }
 
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -42,8 +43,10 @@ public class RockPaperScissorsTest {
         @ParameterizedTest
         @MethodSource("patterns")
         void gameWithFake(Pattern pattern) {
-            String actual = new Game(pattern.hand, new FakeHandFactory(pattern.cpuHand)).exec();
+            FakeHandFactory cpuHandFactory = new FakeHandFactory(pattern.cpuHand);
+            String actual = new Game(pattern.hand, cpuHandFactory).exec();
             assertEquals(pattern.result, actual);
+            assertEquals(1, cpuHandFactory.callCountOfCreate());
         }
 
         class Pattern {
@@ -64,6 +67,7 @@ public class RockPaperScissorsTest {
 
         class FakeHandFactory implements ICpuHandFactory {
             private Hand cpuHand;
+            private int callCountOfCreate;
 
             public FakeHandFactory(Hand cpuHand) {
                 this.cpuHand = cpuHand;
@@ -71,7 +75,12 @@ public class RockPaperScissorsTest {
 
             @Override
             public Hand create() {
+                callCountOfCreate++;
                 return cpuHand;
+            }
+
+            public int callCountOfCreate() {
+                return callCountOfCreate;
             }
         }
     }
