@@ -20,7 +20,6 @@ public class RockPaperScissorsTest {
     void game() {
         String actual = new Game("Rock", new CpuHandFactory()).exec();
         assertThat(actual, isOneOf("Win", "Lose", "Draw"));
-        assertThat(actual, isOneOf("Win", "Lose", "Draw"));
     }
 
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
