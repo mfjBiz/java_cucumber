@@ -1,7 +1,6 @@
 package rocksissorspaper;
 
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -10,8 +9,6 @@ import rockscissorspaper.*;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.isOneOf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RockPaperScissorsTest {
@@ -35,7 +32,7 @@ public class RockPaperScissorsTest {
 
         @ParameterizedTest
         @MethodSource("patterns")
-        void gameWithFake(Pattern pattern) {
+        void game(Pattern pattern) {
             String actual = new Game(pattern.hand, pattern.cpuHand).exec();
             assertEquals(pattern.result, actual);
         }
